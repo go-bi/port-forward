@@ -1,4 +1,5 @@
 /debug
 /lastupdate.tmp
 /app.log
-
+/port-forward
+/port-forward.exe
