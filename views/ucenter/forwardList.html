@@ -63,8 +63,7 @@
             请先添加一条端口转发配置规则
         </td>
     </tr>
-    {Start{# } else { }End} {Start{# for(var i=0, len = d.Data.length; i
-    < len;i++){ }End} <tr>
+    {Start{# } else { }End} {Start{# for(var i=0, len = d.Data.length; i< len;i++){ }End} <tr>
         <td><input type="checkbox" name="id" lay-skin="primary" value="{Start{ d.Data[i].Id }End}"></td>
         <td>{Start{ d.Data[i].Id }End}</td>
         <td>{Start{ d.Data[i].Name }End}</td>
