@@ -15,6 +15,7 @@
             <col width="300">
             <col width="150">
             <col width="120">
+            <col width="150">
             <col width="50">
             <col width="150">
             <col width="100">
@@ -30,6 +31,7 @@
               <th>名称</th>
               <th>本地监听地址</th>
               <th>本地监听端口</th>
+              <th>转发方式</th>
               <th>协议</th>
               <th>转发到地址</th>
               <th>转发到端口</th>
@@ -68,6 +70,7 @@
     <td>{Start{ item.Name }End}</td>
     <td>{Start{ fmtAddr(item.Addr) }End}</td>
     <td>{Start{ item.Port }End}</td>
+    <td>{Start{ fmtFType(item.FType) }End}</td>
     <td>{Start{ item.Protocol }End}</td>
     <td>{Start{ item.TargetAddr }End}</td>
     <td>{Start{ item.TargetPort }End}</td>
@@ -159,6 +162,25 @@ function fmtAddr(val) {
   } else {
     return val;
   }
+}
+
+function fmtFType(val) {
+  var html = "";
+  switch (val) {
+    case 0:
+      html = "<font color='blue'>端口到端口映射</font>";
+      break;
+    case 1:
+      html = "<font color='orange'>内网映射 S->C</font>";
+      break;
+    case 2:
+      html = "<font color='red'>内网反向映射 C->S</font>";
+      break;
+    default:
+      html = "<font color='gray'>其它:" + val + "</font>";
+      break;
+  }
+  return html;
 }
 
 function fmtStatus(val) {

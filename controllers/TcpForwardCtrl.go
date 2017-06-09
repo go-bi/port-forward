@@ -8,6 +8,7 @@ import (
 
 	"fmt"
 
+	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
 )
 
@@ -31,6 +32,7 @@ func (c *ForwardCtrl) ForwardListJson() {
 
 	query := &models.PortForward{}
 	query.Port = port
+	query.FType = -1
 
 	pageData := services.SysDataS.GetPortForwardList(query, pageParam.PIndex, pageParam.PSize)
 
@@ -114,6 +116,7 @@ func (c *ForwardCtrl) SaveForward() {
 	targetAddr := c.GetString("targetAddr", "")
 	targetPort, _ := c.GetInt("targetPort")
 	others := c.GetString("others", "")
+	fType, _ := c.GetInt("fType")
 
 	if utils.IsEmpty(name) {
 		//
@@ -148,6 +151,11 @@ func (c *ForwardCtrl) SaveForward() {
 
 	// }
 
+	if fType > 0 {
+		//内网穿透模式，暂不支持多端口分发
+		others = ""
+	}
+
 	if id > 0 {
 		entity := services.SysDataS.GetPortForwardById(id)
 		key := services.ForwardS.GetKeyByEntity(entity)
@@ -156,7 +164,7 @@ func (c *ForwardCtrl) SaveForward() {
 			fromAddr := fmt.Sprint(entity.Addr, ":", entity.Port)
 			toAddr := fmt.Sprint(entity.TargetAddr, ":", entity.TargetPort)
 			resultChan := make(chan models.ResultData)
-			go services.ForwardS.ClosePortForward(fromAddr, toAddr, resultChan)
+			go services.ForwardS.ClosePortForward(fromAddr, toAddr, entity.FType, resultChan)
 		}
 	}
 
@@ -171,6 +179,7 @@ func (c *ForwardCtrl) SaveForward() {
 	entity.TargetAddr = targetAddr
 	entity.TargetPort = targetPort
 	entity.Others = others
+	entity.FType = fType
 
 	err := services.SysDataS.SavePortForward(entity)
 	if err == nil {
@@ -207,7 +216,7 @@ func (c *ForwardCtrl) CloseForward() {
 	toAddr := fmt.Sprint(entity.TargetAddr, ":", entity.TargetPort)
 
 	resultChan := make(chan models.ResultData)
-	go services.ForwardS.ClosePortForward(fromAddr, toAddr, resultChan)
+	go services.ForwardS.ClosePortForward(fromAddr, toAddr, entity.FType, resultChan)
 
 	c.Data["json"] = <-resultChan
 
@@ -219,4 +228,86 @@ func (c *ForwardCtrl) ApiDoc() {
 
 	c.TplName = "ucenter/apiDoc.html"
 
+}
+
+// @router /u/NetAgent [get]
+func (c *ForwardCtrl) NetAgent() {
+
+	c.TplName = "ucenter/netAgent.html"
+}
+
+// @router /u/OpenMagicService [post]
+func (c *ForwardCtrl) OpenMagicService() {
+
+	addr := beego.AppConfig.DefaultString("magic.service", ":7000")
+
+	resultChan := make(chan models.ResultData)
+	go services.ForwardS.StartMagicService(addr, resultChan)
+
+	c.Data["json"] = <-resultChan
+	//c.Data["json"] = models.ResultData{Code: 0, Msg: ""}
+
+	c.ServeJSON()
+}
+
+// @router /u/CloseMagicService [post]
+func (c *ForwardCtrl) CloseMagicService() {
+
+	resultChan := make(chan models.ResultData)
+	go services.ForwardS.StopMagicService(resultChan)
+
+	c.Data["json"] = <-resultChan
+
+	c.ServeJSON()
+}
+
+// @router /u/GetMagicStatus [post]
+func (c *ForwardCtrl) GetMagicStatus() {
+
+	magicListener := services.ForwardS.GetMagicListener()
+	if magicListener == nil {
+		c.Data["json"] = models.ResultData{Code: 1, Msg: "未运行"}
+	} else {
+		c.Data["json"] = models.ResultData{Code: 0, Msg: "正在运行中..."}
+	}
+
+	c.ServeJSON()
+}
+
+// @router /u/GetNetAgentStatus [post]
+func (c *ForwardCtrl) GetNetAgentStatus() {
+	agentMap := services.ForwardS.GetMagicClient()
+
+	if len(agentMap) > 0 {
+		count := len(agentMap)
+		for k, _ := range agentMap {
+			c.Data["json"] = models.ResultData{Code: 0, Msg: k, Data: count}
+			//只取1个先
+			break
+		}
+
+	} else {
+		c.Data["json"] = models.ResultData{Code: 1, Msg: "未检测到Agent连接"}
+	}
+
+	c.ServeJSON()
+}
+
+// @router /u/ClearNetAgentStatus [post]
+func (c *ForwardCtrl) ClearNetAgentStatus() {
+	agentMap := services.ForwardS.GetMagicClient()
+
+	if len(agentMap) > 0 {
+		for k, v := range agentMap {
+			if v != nil {
+				v.Close()
+				services.ForwardS.UnRegistryMagicClient(k)
+				logs.Debug("关闭Agent：", k)
+			}
+		}
+
+	}
+
+	c.Data["json"] = models.ResultData{Code: 0, Msg: ""}
+	c.ServeJSON()
 }

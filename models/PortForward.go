@@ -22,6 +22,8 @@ type PortForward struct {
 	CreateTime time.Time `orm:"column(createTime);type(datetime)"`
 	//暂时用来存放端口分发配置，后续版本再调整
 	Others string `orm:"column(others);size(500);null"`
+	// 0:普通映射,1:内网穿透映射（Server->Client）,2:内网穿透反向映射（Client->Server）
+	FType int `orm:"column(fType);null"`
 }
 
 func (t *PortForward) TableName() string {

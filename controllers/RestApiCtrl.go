@@ -54,11 +54,12 @@ func (c *RestApiCtrl) OpenForward() {
 func (c *RestApiCtrl) CloseForward() {
 	fromAddr := c.GetString("fromAddr")
 	toAddr := c.GetString("toAddr")
+	fType, _ := c.GetInt("fType", 0)
 
 	//测试
 	//http://127.0.0.1:8000/api/v1/CloseForward?auth=26CCD056107481F45D1AC805A24A9E59&fromAddr=:8010&toAddr=127.0.0.1:3306
 	resultChan := make(chan models.ResultData)
-	go services.ForwardS.ClosePortForward(fromAddr, toAddr, resultChan)
+	go services.ForwardS.ClosePortForward(fromAddr, toAddr, fType, resultChan)
 
 	c.Data["json"] = <-resultChan
 

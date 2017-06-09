@@ -1,6 +1,8 @@
 package services
 
 import (
+	"forward-core/common"
+
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	_ "github.com/go-sql-driver/mysql"
@@ -8,9 +10,10 @@ import (
 )
 
 var (
-	OrmerS   orm.Ormer
-	SysDataS = new(SysDataService)
-	ForwardS = new(ForwardService)
+	OrmerS     orm.Ormer
+	SysDataS   = new(SysDataService)
+	ForwardS   = new(ForwardService)
+	NetCommonS = new(common.NetCommon)
 )
 
 func init() {

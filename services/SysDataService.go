@@ -173,6 +173,10 @@ func (_self *SysDataService) GetPortForwardList(query *models.PortForward, pageI
 		qs = qs.Filter("Port", query.Port)
 	}
 
+	if query.FType > -1 {
+		qs = qs.Filter("FType", query.FType)
+	}
+
 	totals, _ := qs.Count()
 	pages := math.Ceil(float64(totals) / float64(pageSize))
 
@@ -211,14 +215,14 @@ func (_self *SysDataService) SavePortForward(entity *models.PortForward) error {
 		update.TargetAddr = entity.TargetAddr
 		update.TargetPort = entity.TargetPort
 		update.Others = entity.Others
+		update.FType = entity.FType
 
 		_, err1 := OrmerS.Update(update)
 		return err1
 	} else {
 		entity.CreateTime = time.Now()
-		//_, err := OrmerS.Insert(entity)
-		res, err := OrmerS.Raw("INSERT INTO t_port_forward(name, status, addr, port, protocol, targetAddr, targetPort, createTime, others) values(?,?,?,?,?,?,?,?,?)",
-			entity.Name, entity.Status, entity.Addr, entity.Port, entity.Protocol, entity.TargetAddr, entity.TargetPort, entity.CreateTime, entity.Others).Exec()
+		res, err := OrmerS.Raw("INSERT INTO t_port_forward(name, status, addr, port, protocol, targetAddr, targetPort, createTime, others, fType) values(?,?,?,?,?,?,?,?,?,?)",
+			entity.Name, entity.Status, entity.Addr, entity.Port, entity.Protocol, entity.TargetAddr, entity.TargetPort, entity.CreateTime, entity.Others, entity.FType).Exec()
 		if err == nil {
 			num, _ := res.RowsAffected()
 			logs.Debug("AddPortForward", num)
