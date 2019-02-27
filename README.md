@@ -8,7 +8,7 @@ Go语言开发的端口转发工具  for port data forward
 数据库：sqlite3
 ```
 
-# 最新更新
+# 最近更新
 v1.2.8_beta 发布，完善点对点转发的稳定性，支持TCP和UDP协议转发
 
 # 功能介绍
