@@ -163,6 +163,27 @@ func (_self *SysDataService) SavePortForwardByApi(sourcePort, protocol, targetPo
 
 }
 
+func (_self *SysDataService) GetAllPortForwardList(status int) []*Models.PortForward {
+
+	var entites []*Models.PortForward
+	entity := new(Models.PortForward)
+	qs := OrmerS.QueryTable(entity)
+
+	if status > -1 {
+		qs = qs.Filter("Status", status)
+	}
+
+	num, err := qs.All(&entites)
+	if err != nil {
+		logs.Error("GetAllPortForwardList ", err)
+	} else {
+		logs.Debug("GetAllPortForwardList rows ", num)
+	}
+
+	return entites
+
+}
+
 func (_self *SysDataService) GetPortForwardList(query *Models.PortForward, pageIndex int64, pageSize int64) Models.PageData {
 
 	var entites []*Models.PortForward
@@ -216,6 +237,7 @@ func (_self *SysDataService) SavePortForward(entity *Models.PortForward) error {
 		update.TargetPort = entity.TargetPort
 		update.Others = entity.Others
 		update.FType = entity.FType
+		update.Status = entity.Status
 
 		_, err1 := OrmerS.Update(update)
 		return err1

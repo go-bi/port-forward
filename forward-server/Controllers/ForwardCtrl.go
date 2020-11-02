@@ -7,6 +7,7 @@ import (
 	"forward-core/Utils"
 	"forward-server/Controllers/BaseCtrl"
 	"forward-server/Service"
+
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
 )
@@ -14,7 +15,6 @@ import (
 type ForwardCtrl struct {
 	BaseCtrl.ConsoleCtrl
 }
-
 
 // @router /u/ForwardList [get]
 func (c *ForwardCtrl) ForwardList() {
@@ -41,7 +41,7 @@ func (c *ForwardCtrl) ForwardListJson() {
 		//entity.Status = Utils.If(forwardJob!=nil, int(forwardJob.Status), 0).(int)
 		if forwardJob != nil {
 			entity.Status = int(forwardJob.Status)
-		}else{
+		} else {
 			entity.Status = 0
 		}
 	}
@@ -87,7 +87,7 @@ func (c *ForwardCtrl) DelForward() {
 		//检查是否正在转发中
 		entity := Service.SysDataS.GetPortForwardById(_id)
 		forwardJob := Service.SysDataS.GetForwardJob(entity)
-		if forwardJob!=nil && forwardJob.Status == Constant.RunStatus_Running {
+		if forwardJob != nil && forwardJob.Status == Constant.RunStatus_Running {
 			c.Data["json"] = Models.FuncResult{Code: 1, Msg: fmt.Sprint("[", entity.Name, "] 正在转发中，不能删除")}
 			c.ServeJSON()
 			return
@@ -122,6 +122,7 @@ func (c *ForwardCtrl) SaveForward() {
 	targetPort, _ := c.GetInt("targetPort")
 	others := c.GetString("others", "")
 	fType, _ := c.GetInt("fType")
+	status, _ := c.GetInt("status")
 
 	if Utils.IsEmpty(name) {
 		//
@@ -164,7 +165,7 @@ func (c *ForwardCtrl) SaveForward() {
 	if id > 0 {
 		entity := Service.SysDataS.GetPortForwardById(id)
 		forwardJob := Service.SysDataS.GetForwardJob(entity)
-		if forwardJob!=nil && forwardJob.Status == Constant.RunStatus_Running {
+		if forwardJob != nil && forwardJob.Status == Constant.RunStatus_Running {
 			//正在转发中，修改前先关闭
 			c.Data["json"] = Models.FuncResult{Code: 1, Msg: fmt.Sprint("[", entity.Name, "] 正在转发中，不能修改")}
 			c.ServeJSON()
@@ -184,6 +185,7 @@ func (c *ForwardCtrl) SaveForward() {
 	entity.TargetPort = targetPort
 	entity.Others = others
 	entity.FType = fType
+	entity.Status = status
 
 	err := Service.SysDataS.SavePortForward(entity)
 	if err == nil {
@@ -332,7 +334,6 @@ func (c *ForwardCtrl) ClearNetAgentStatus() {
 	c.ServeJSON()
 }
 
-
 // @router /u/StartAgentJob [post]
 func (c *ForwardCtrl) StartAgentJob() {
 
@@ -341,7 +342,6 @@ func (c *ForwardCtrl) StartAgentJob() {
 	targetAddr := c.GetString("targetAddr", "")
 	fType, _ := c.GetInt("fType")
 
-
 	portForward := new(Models.PortForward)
 	portForward.Addr = Utils.Split(lAddr, ":")[0]
 	portForward.Port = Utils.ToInt(Utils.Split(lAddr, ":")[1])
@@ -349,7 +349,6 @@ func (c *ForwardCtrl) StartAgentJob() {
 	portForward.TargetAddr = Utils.Split(targetAddr, ":")[0]
 	portForward.TargetPort = Utils.ToInt(Utils.Split(targetAddr, ":")[1])
 	portForward.FType = fType
-
 
 	resultChan := make(chan Models.FuncResult)
 	go Service.MagicServ.StartMagicForward(portForward, resultChan)
@@ -366,4 +365,3 @@ func (c *ForwardCtrl) StopAgentJob() {
 	c.ServeJSON()
 
 }
-

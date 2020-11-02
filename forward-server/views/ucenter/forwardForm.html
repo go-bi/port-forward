@@ -58,6 +58,12 @@
       </div>
     </div>
     <div class="layui-form-item">
+      <label class="layui-form-label">是否禁用</label>
+      <div class="layui-input-inline">
+        <input type="text" name="status" value="{{.entity.Status}}" lay-verify="required" placeholder="0:禁用，1:开启" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
         <pre class="layui-code" style="text-align: left;">
 *多分发说明：
 如果不需要“多分发”，请留空；
