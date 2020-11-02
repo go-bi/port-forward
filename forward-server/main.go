@@ -2,15 +2,17 @@ package main
 
 import (
 	"fmt"
-	"forward-core/Models"
-	_ "forward-server/routers"
 	"forward-server/Service"
+	_ "forward-server/routers"
+
+	"forward-core/Models"
+
 	"github.com/astaxie/beego/logs"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/vmihailenco/msgpack"
 )
 
-func main()  {
+func main() {
 
 	logs.SetLogger(logs.AdapterConsole, `{"level":7}`)
 	logs.SetLogger(logs.AdapterFile, `{"filename":"app.log","level":7,"maxlines":0,"maxsize":0,"daily":true,"maxdays":10}`)
@@ -33,7 +35,6 @@ func main()  {
 	//启动Web控制台和接口
 	Service.ConsoleServ.StartHttpServer()
 
-
 	//select {}
 
 	//endRunning := make(chan bool, 1)
@@ -42,12 +43,11 @@ func main()  {
 	//<-endRunning
 }
 
-func test1(){
+func test1() {
 
 	//github.com/gogf/gf/g/os/glog
 	//glog.Debug("This is Debug")
 	//glog.Info("This is Info")
-
 
 	b, err := msgpack.Marshal(&Models.PortInfo{Addr: "bar"})
 	if err != nil {
@@ -66,7 +66,7 @@ func test1(){
 	config := new(Models.ForwardConfig)
 	//config.Protocol = "TCP"
 	config.Protocol = "UDP"
-	config.SrcAddr=""
+	config.SrcAddr = ""
 	config.SrcPort = 8888
 	//106.14.184.192:9999
 	//config.DestAddr = "106.14.184.192"
@@ -80,8 +80,6 @@ func test1(){
 	resultChan := make(chan Models.FuncResult)
 	Service.ForWardServ.OpenForward(config, resultChan)
 
-
 	fmt.Println(<-resultChan)
 
 }
-

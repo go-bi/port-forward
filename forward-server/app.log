@@ -1,0 +1,76 @@
+2020/11/02 15:14:14.104 [D] [main.go:26]  ★★★★★★★★★★★★★★★★★★★★
+2020/11/02 15:14:14.104 [D] [main.go:27]           tcp-forward 启动
+2020/11/02 15:14:14.104 [D] [main.go:28]  
+2020/11/02 15:14:14.104 [D] [main.go:29]  项目地址：https://github.com/tavenli/port-forward
+2020/11/02 15:14:14.104 [D] [main.go:30]  
+2020/11/02 15:14:14.104 [D] [main.go:31]  ★★★★★★★★★★★★★★★★★★★★
+2020/11/02 15:14:14.104 [D] [ConsoleServer.go:27]  Http 服务启动...
+2020/11/02 15:14:14.139 [I] [app.go:214]  http server Running on http://0.0.0.0:8080
+2020/11/02 15:27:49.344 [D] [main.go:26]  ★★★★★★★★★★★★★★★★★★★★
+2020/11/02 15:27:49.344 [D] [main.go:27]           tcp-forward 启动
+2020/11/02 15:27:49.344 [D] [main.go:28]  
+2020/11/02 15:27:49.344 [D] [main.go:29]  项目地址：https://github.com/tavenli/port-forward
+2020/11/02 15:27:49.344 [D] [main.go:30]  
+2020/11/02 15:27:49.344 [D] [main.go:31]  ★★★★★★★★★★★★★★★★★★★★
+2020/11/02 15:27:49.344 [D] [ConsoleServer.go:27]  Http 服务启动...
+2020/11/02 15:27:49.380 [I] [app.go:214]  http server Running on http://0.0.0.0:8080
+2020/11/02 15:28:03.604 [D] [WebCtrl.go:14]  执行Prepare，当前reqUrl： /
+2020/11/02 15:28:03.604 [D] [router.go:963]  |      127.0.0.1|[47m 302 [0m|     1.9951ms|   match|[44m GET     [0m /     r:/
+2020/11/02 15:28:03.619 [D] [ConsoleCtrl.go:20]  执行Prepare，当前reqUrl： /login
+2020/11/02 15:28:03.620 [D] [router.go:963]  |      127.0.0.1|[42m 200 [0m|      999.1µs|   match|[44m GET     [0m /login   r:/login
+2020/11/02 15:28:03.669 [D] [router.go:963]  |      127.0.0.1|[42m 200 [0m|      998.5µs|   match|[44m GET     [0m /static/layui/css/layui.css
+2020/11/02 15:28:03.671 [D] [router.go:963]  |      127.0.0.1|[42m 200 [0m|           0s|   match|[44m GET     [0m /static/layui/lay/dest/layui.all.js
+2020/11/02 15:28:03.686 [D] [router.go:963]  |      127.0.0.1|[42m 200 [0m|      997.4µs|   match|[44m GET     [0m /static/layui/css/modules/laydate/laydate.css
+2020/11/02 15:28:03.693 [D] [router.go:963]  |      127.0.0.1|[42m 200 [0m|      998.4µs|   match|[44m GET     [0m /static/layui/css/modules/layer/default/layer.css
+2020/11/02 15:28:03.696 [D] [router.go:963]  |      127.0.0.1|[42m 200 [0m|      997.6µs|   match|[44m GET     [0m /static/layui/css/modules/code.css
+2020/11/02 15:28:03.730 [D] [router.go:963]  |      127.0.0.1|[43m 404 [0m|        998µs| nomatch|[44m GET     [0m /favicon.ico
+2020/11/02 15:28:08.116 [D] [ConsoleCtrl.go:20]  执行Prepare，当前reqUrl： /login
+2020/11/02 15:28:08.117 [D] [LoginCtrl.go:43]  存储的密码： e10adc3949ba59abbe56e057f20f883e  输入的密码： 21232f297a57a5a743894a0e4a801fc3
+2020/11/02 15:28:08.117 [D] [LoginCtrl.go:53]  用户登录失败
+2020/11/02 15:28:08.117 [D] [router.go:963]  |      127.0.0.1|[47m 302 [0m|        998µs|   match|[46m POST    [0m /login   r:/login
+2020/11/02 15:28:08.119 [D] [ConsoleCtrl.go:20]  执行Prepare，当前reqUrl： /login
+2020/11/02 15:28:08.120 [D] [router.go:963]  |      127.0.0.1|[42m 200 [0m|      995.9µs|   match|[44m GET     [0m /login   r:/login
+2020/11/02 15:28:15.282 [D] [ConsoleCtrl.go:20]  执行Prepare，当前reqUrl： /login
+2020/11/02 15:28:15.283 [D] [LoginCtrl.go:43]  存储的密码： e10adc3949ba59abbe56e057f20f883e  输入的密码： e10adc3949ba59abbe56e057f20f883e
+2020/11/02 15:28:15.283 [I] [LoginCtrl.go:45]  用户登录： admin  IP： 127.0.0.1:55467
+2020/11/02 15:28:15.283 [D] [router.go:963]  |      127.0.0.1|[47m 302 [0m|        998µs|   match|[46m POST    [0m /login   r:/login
+2020/11/02 15:28:15.285 [D] [ConsoleCtrl.go:20]  执行Prepare，当前reqUrl： /u/main
+2020/11/02 15:28:15.287 [D] [router.go:963]  |      127.0.0.1|[42m 200 [0m|     1.9957ms|   match|[44m GET     [0m /u/main   r:/u/main
+2020/11/02 15:28:15.300 [D] [router.go:963]  |      127.0.0.1|[42m 200 [0m|           0s|   match|[44m GET     [0m /static/js/jquery.min.js
+2020/11/02 15:28:15.301 [D] [router.go:963]  |      127.0.0.1|[42m 200 [0m|        998µs|   match|[44m GET     [0m /static/layui/layui.js
+2020/11/02 15:28:15.302 [D] [router.go:963]  |      127.0.0.1|[42m 200 [0m|      997.8µs|   match|[44m GET     [0m /static/js/moment.min.js
+2020/11/02 15:28:15.302 [D] [router.go:963]  |      127.0.0.1|[42m 200 [0m|           0s|   match|[44m GET     [0m /static/js/timer.min.js
+2020/11/02 15:28:15.317 [D] [router.go:963]  |      127.0.0.1|[42m 200 [0m|           0s|   match|[44m GET     [0m /static/layui/lay/modules/layer.js
+2020/11/02 15:28:15.318 [D] [ConsoleCtrl.go:20]  执行Prepare，当前reqUrl： /u/ForwardList
+2020/11/02 15:28:15.319 [D] [router.go:963]  |      127.0.0.1|[42m 200 [0m|      995.6µs|   match|[44m GET     [0m /u/ForwardList   r:/u/ForwardList
+2020/11/02 15:28:15.368 [D] [router.go:963]  |      127.0.0.1|[42m 200 [0m|      997.3µs|   match|[44m GET     [0m /static/layui/lay/modules/form.js
+2020/11/02 15:28:15.369 [D] [router.go:963]  |      127.0.0.1|[42m 200 [0m|           0s|   match|[44m GET     [0m /static/layui/font/iconfont.woff
+2020/11/02 15:28:15.380 [D] [router.go:963]  |      127.0.0.1|[42m 200 [0m|           0s|   match|[44m GET     [0m /static/layui/lay/modules/element.js
+2020/11/02 15:28:15.390 [D] [router.go:963]  |      127.0.0.1|[42m 200 [0m|      998.9µs|   match|[44m GET     [0m /static/layui/lay/modules/laytpl.js
+2020/11/02 15:28:15.394 [D] [router.go:963]  |      127.0.0.1|[42m 200 [0m|      996.6µs|   match|[44m GET     [0m /static/layui/lay/modules/laypage.js
+2020/11/02 15:28:15.397 [D] [ConsoleCtrl.go:20]  执行Prepare，当前reqUrl： /u/ForwardList/json
+2020/11/02 15:28:15.398 [D] [SysDataService.go:191]  GetPortForwardList rows  3
+2020/11/02 15:28:15.398 [D] [router.go:963]  |      127.0.0.1|[42m 200 [0m|      998.4µs|   match|[46m POST    [0m /u/ForwardList/json   r:/u/ForwardList/json
+2020/11/02 15:32:53.876 [D] [main.go:26]  ★★★★★★★★★★★★★★★★★★★★
+2020/11/02 15:32:53.876 [D] [main.go:27]           tcp-forward 启动
+2020/11/02 15:32:53.876 [D] [main.go:28]  
+2020/11/02 15:32:53.876 [D] [main.go:29]  项目地址：https://github.com/tavenli/port-forward
+2020/11/02 15:32:53.876 [D] [main.go:30]  
+2020/11/02 15:32:53.876 [D] [main.go:31]  ★★★★★★★★★★★★★★★★★★★★
+2020/11/02 15:32:53.876 [D] [ConsoleServer.go:27]  Http 服务启动...
+2020/11/02 15:32:53.911 [I] [app.go:214]  http server Running on http://0.0.0.0:8080
+2020/11/02 15:32:58.703 [D] [ConsoleCtrl.go:20]  执行Prepare，当前reqUrl： /u/main
+2020/11/02 15:32:58.703 [D] [router.go:963]  |      127.0.0.1|[47m 302 [0m|     1.9951ms|   match|[44m GET     [0m /u/main   r:/u/main
+2020/11/02 15:32:58.705 [D] [ConsoleCtrl.go:20]  执行Prepare，当前reqUrl： /login
+2020/11/02 15:32:58.705 [D] [router.go:963]  |      127.0.0.1|[42m 200 [0m|           0s|   match|[44m GET     [0m /login   r:/login
+2020/11/02 15:33:04.808 [D] [ConsoleCtrl.go:20]  执行Prepare，当前reqUrl： /login
+2020/11/02 15:33:04.808 [D] [LoginCtrl.go:43]  存储的密码： e10adc3949ba59abbe56e057f20f883e  输入的密码： e10adc3949ba59abbe56e057f20f883e
+2020/11/02 15:33:04.809 [I] [LoginCtrl.go:45]  用户登录： admin  IP： 127.0.0.1:55626
+2020/11/02 15:33:04.809 [D] [router.go:963]  |      127.0.0.1|[47m 302 [0m|      997.5µs|   match|[46m POST    [0m /login   r:/login
+2020/11/02 15:33:04.811 [D] [ConsoleCtrl.go:20]  执行Prepare，当前reqUrl： /u/main
+2020/11/02 15:33:04.812 [D] [router.go:963]  |      127.0.0.1|[42m 200 [0m|      995.9µs|   match|[44m GET     [0m /u/main   r:/u/main
+2020/11/02 15:33:04.863 [D] [ConsoleCtrl.go:20]  执行Prepare，当前reqUrl： /u/ForwardList
+2020/11/02 15:33:04.864 [D] [router.go:963]  |      127.0.0.1|[42m 200 [0m|      997.4µs|   match|[44m GET     [0m /u/ForwardList   r:/u/ForwardList
+2020/11/02 15:33:04.882 [D] [ConsoleCtrl.go:20]  执行Prepare，当前reqUrl： /u/ForwardList/json
+2020/11/02 15:33:04.883 [D] [SysDataService.go:191]  GetPortForwardList rows  3
+2020/11/02 15:33:04.883 [D] [router.go:963]  |      127.0.0.1|[42m 200 [0m|        998µs|   match|[46m POST    [0m /u/ForwardList/json   r:/u/ForwardList/json
