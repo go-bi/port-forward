@@ -1,10 +1,37 @@
 <div class="layui-tab layui-tab-card">
+  
   <ul class="layui-tab-title">
     <li class="layui-this">端口转发列表</li>
     <li>帮助说明</li>
   </ul>
   <div class="layui-tab-content" style="height: auto;">
+
+    
     <div class="layui-tab-item layui-show">
+      
+      <div class="layui-form layui-card-header layuiadmin-card-header-auto" lay-filter="app-content-list">
+        <div class="layui-form-item">
+          <div class="layui-inline">
+            <label class="layui-form-label">本地端口</label>
+            <div class="layui-input-inline">
+              <input type="text" id="port" name="port" placeholder="本地监听端口" autocomplete="off" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-inline">
+            <label class="layui-form-label">目标端口</label>
+            <div class="layui-input-inline">
+              <input type="text" id="targetPort" name="targetPort" placeholder="转发到端口" autocomplete="off" class="layui-input">
+            </div>
+          </div>
+
+          <div class="layui-inline">
+            <button class="layui-btn layuiadmin-btn-list" onclick="query(1);">
+              查询
+            </button>
+          </div>
+        </div>
+      </div>
+
       <button class="layui-btn layui-btn-small" onclick="addForward();"><i class="layui-icon"></i> 添加转发</button>
       <button class="layui-btn layui-btn-small" onclick="delForward();"><i class="layui-icon"></i> 批量删除</button>
       <div class="layui-form">
@@ -47,7 +74,7 @@
     </div>
     <div class="layui-tab-item">
       <pre class="layui-code">
-说明文档请访问：<a href="https://github.com/tavenli/port-forward" target="_blank">https://github.com/tavenli/port-forward</a>
+说明文档请访问：<a href="https://gitee.com/tavenli/port-forward" target="_blank">https://gitee.com/tavenli/port-forward</a>
 
 使用问题或个性化需求可加QQ号：17020415 （申请时请备注：端口转发）
             </pre>
@@ -58,7 +85,7 @@
   {Start{# if(d.Data === null || d.Data.length === 0){ }End}
   <tr>
     <td colspan="10">
-      请先添加一条端口转发配置规则
+      查询转发配置规则结果为空
     </td>
   </tr>
   {Start{# } else { }End} {Start{# layui.each(d.Data, function(index, item){ }End}
@@ -106,7 +133,12 @@ $(document).ready(function() {
 function query(pIndex) {
   // var columnFiled = $("#columnFiled").val();
   // var keyWord = $("#keyWord").val();
+  var port = $("#port").val();
+  var targetPort = $("#targetPort").val();
+
   $.post("ForwardList/json", {
+    port: port,
+    targetPort: targetPort,
     pIndex: pIndex,
     pSize: 10
   }, function(json) {
@@ -288,7 +320,7 @@ function refreshGrid() {
   query(1);
 }
 
-function OpenForward(id) {
+function OpenForward2(id) {
   layer.confirm("确定启动该转发吗？", {
     btn: ['确定', '取消'] //按钮
   }, function(index, layero) {
@@ -309,7 +341,7 @@ function OpenForward(id) {
   });
 }
 
-function CloseForward(id) {
+function CloseForward2(id) {
   layer.confirm("确定停止该转发吗？", {
     btn: ['确定', '取消'] //按钮
   }, function(index, layero) {
@@ -329,4 +361,39 @@ function CloseForward(id) {
     }, 'json');
   });
 }
+
+function OpenForward(id) {
+  $.post("/u/OpenForward", {
+      rnd: Math.random(),
+      id: id
+    }, function(json) {
+      if (json.Code == 0) { //成功
+        layer.msg("执行成功.");
+        query(1);
+      } else { //失败
+        layer.alert(json.Msg, {
+          icon: 2
+        });
+        query(1);
+      }
+    }, 'json');
+}
+
+function CloseForward(id) {
+  $.post("/u/CloseForward", {
+      rnd: Math.random(),
+      id: id
+    }, function(json) {
+      if (json.Code == 0) { //成功
+        layer.msg("执行成功.");
+        query(1);
+      } else { //失败
+        layer.alert(json.Msg, {
+          icon: 2
+        });
+        query(1);
+      }
+    }, 'json');
+}
+
 </script>

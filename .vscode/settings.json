@@ -3,7 +3,6 @@
     "go.alternateTools": {
     
     },
-    "go.useLanguageServer": true,
     "[go]": {
         "editor.formatOnSave": true,
         "editor.codeActionsOnSave": {
@@ -18,12 +17,16 @@
             "source.organizeImports": true,
         },
     },
-    "gopls": {
-        // Add parameter placeholders when completing a function.
-        "usePlaceholders": true,
+    "go.gotoSymbol.includeImports": true,
+    "go.gotoSymbol.includeGoroot": true,
+    "go.languageServerExperimentalFeatures": {
 
-        // If true, enable additional analyses with staticcheck.
-        // Warning: This will significantly increase memory usage.
-        "staticcheck": false,
-    }
+        "diagnostics": true,
+        "documentLink": true
+    },
+    "go.trace.server": "verbose",
+    "go.overwriteGoplsMiddleware": {
+    
+    },
+    "go.useLanguageServer": true
 }

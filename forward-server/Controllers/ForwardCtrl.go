@@ -29,9 +29,11 @@ func (c *ForwardCtrl) ForwardListJson() {
 	pageParam.PSize, _ = c.GetInt64("pSize")
 
 	port, _ := c.GetInt("port")
+	targetPort, _ := c.GetInt("targetPort")
 
 	query := &Models.PortForward{}
 	query.Port = port
+	query.TargetPort = targetPort
 	query.FType = -1
 
 	pageData := Service.SysDataS.GetPortForwardList(query, pageParam.PIndex, pageParam.PSize)
@@ -56,6 +58,7 @@ func (c *ForwardCtrl) ForwardListJson() {
 func (c *ForwardCtrl) AddForward() {
 
 	entity := Models.PortForward{}
+	entity.Status = 1
 
 	c.Data["entity"] = entity
 
@@ -126,9 +129,10 @@ func (c *ForwardCtrl) SaveForward() {
 
 	if Utils.IsEmpty(name) {
 		//
-		c.Data["json"] = Models.FuncResult{Code: 1, Msg: "名称 不能为空"}
-		c.ServeJSON()
-		return
+		//c.Data["json"] = Models.FuncResult{Code: 1, Msg: "名称 不能为空"}
+		//c.ServeJSON()
+		//return
+		name = "-"
 	}
 
 	if port < 0 || port > 65535 {
@@ -148,6 +152,13 @@ func (c *ForwardCtrl) SaveForward() {
 	if targetPort < 0 || targetPort > 65535 {
 		//
 		c.Data["json"] = Models.FuncResult{Code: 1, Msg: "目标端口 不在允许的范围"}
+		c.ServeJSON()
+		return
+	}
+
+	if status != 0 && status != 1 {
+		//
+		c.Data["json"] = Models.FuncResult{Code: 1, Msg: "输入的 启用/禁用 值不正确"}
 		c.ServeJSON()
 		return
 	}
