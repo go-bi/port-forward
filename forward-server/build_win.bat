@@ -1,7 +1,11 @@
 
 ::set GoDevWork="D:\CodeWork\port-forward\"
 
+echo "Clean for build..."
+go clean
+
 echo "Build For windows..."
+
 set GOOS=windows
 set GOARCH=amd64
 ::set GOPATH=%GoDevWork%;%GOPATH%
