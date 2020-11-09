@@ -305,6 +305,7 @@ function delForward() {
     }, function(json) {
       if (json.Code == 0) { //成功
         layer.msg("执行成功.");
+        layer.close(index);
         query(1);
       } else { //失败
         layer.alert(json.Msg, {
@@ -320,7 +321,7 @@ function refreshGrid() {
   query(1);
 }
 
-function OpenForward2(id) {
+function OpenForward(id) {
   layer.confirm("确定启动该转发吗？", {
     btn: ['确定', '取消'] //按钮
   }, function(index, layero) {
@@ -330,6 +331,7 @@ function OpenForward2(id) {
     }, function(json) {
       if (json.Code == 0) { //成功
         layer.msg("执行成功.");
+        layer.close(index);
         query(1);
       } else { //失败
         layer.alert(json.Msg, {
@@ -341,7 +343,7 @@ function OpenForward2(id) {
   });
 }
 
-function CloseForward2(id) {
+function CloseForward(id) {
   layer.confirm("确定停止该转发吗？", {
     btn: ['确定', '取消'] //按钮
   }, function(index, layero) {
@@ -351,6 +353,7 @@ function CloseForward2(id) {
     }, function(json) {
       if (json.Code == 0) { //成功
         layer.msg("执行成功.");
+        layer.close(index);
         query(1);
       } else { //失败
         layer.alert(json.Msg, {
@@ -362,38 +365,5 @@ function CloseForward2(id) {
   });
 }
 
-function OpenForward(id) {
-  $.post("/u/OpenForward", {
-      rnd: Math.random(),
-      id: id
-    }, function(json) {
-      if (json.Code == 0) { //成功
-        layer.msg("执行成功.");
-        query(1);
-      } else { //失败
-        layer.alert(json.Msg, {
-          icon: 2
-        });
-        query(1);
-      }
-    }, 'json');
-}
-
-function CloseForward(id) {
-  $.post("/u/CloseForward", {
-      rnd: Math.random(),
-      id: id
-    }, function(json) {
-      if (json.Code == 0) { //成功
-        layer.msg("执行成功.");
-        query(1);
-      } else { //失败
-        layer.alert(json.Msg, {
-          icon: 2
-        });
-        query(1);
-      }
-    }, 'json');
-}
 
 </script>
