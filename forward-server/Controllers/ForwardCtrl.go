@@ -29,10 +29,12 @@ func (c *ForwardCtrl) ForwardListJson() {
 	pageParam.PSize, _ = c.GetInt64("pSize")
 
 	port, _ := c.GetInt("port")
+	targetAddr := c.GetString("targetAddr", "")
 	targetPort, _ := c.GetInt("targetPort")
 
 	query := &Models.PortForward{}
 	query.Port = port
+	query.TargetAddr = targetAddr
 	query.TargetPort = targetPort
 	query.FType = -1
 

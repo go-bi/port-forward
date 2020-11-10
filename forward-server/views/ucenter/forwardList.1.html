@@ -85,7 +85,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         layui.use(["jquery", "layer", "form", "element", "laytpl", "laypage"], function () {
-            var $ = layui.jquery, layer = layui.layer, form = layui.form(), laytpl = layui.laytpl, laypage = layui.laypage;
+            var $ = layui.jquery, layer = layui.layer, form = layui.form, laytpl = layui.laytpl, laypage = layui.laypage;
             //全选
             form.on('checkbox(allChoose)', function (data) {
                 var child = $(data.elem).parents('table').find('tbody input[type="checkbox"]');
@@ -121,7 +121,7 @@
                         }
                     }
                 });
-                layui.form().render('checkbox');
+                layui.form.render('checkbox');
             } else {//失败
                 layui.layer.alert("失败：" + json.Msg, { icon: 2 });
             }

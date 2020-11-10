@@ -18,6 +18,12 @@
             </div>
           </div>
           <div class="layui-inline">
+            <label class="layui-form-label">目标地址</label>
+            <div class="layui-input-inline">
+              <input type="text" id="targetAddr" name="targetAddr" placeholder="转发到地址" autocomplete="off" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-inline">
             <label class="layui-form-label">目标端口</label>
             <div class="layui-input-inline">
               <input type="text" id="targetPort" name="targetPort" placeholder="转发到端口" autocomplete="off" class="layui-input">
@@ -111,7 +117,7 @@ $(document).ready(function() {
   layui.use(["jquery", "layer", "form", "element", "laytpl", "laypage"], function() {
     var $ = layui.jquery,
       layer = layui.layer,
-      form = layui.form(),
+      form = layui.form,
       laytpl = layui.laytpl,
       laypage = layui.laypage;
     //全选
@@ -126,6 +132,7 @@ $(document).ready(function() {
       open: "{Start{",
       close: "}End}"
     });
+
     query(1);
   });
 });
@@ -134,10 +141,12 @@ function query(pIndex) {
   // var columnFiled = $("#columnFiled").val();
   // var keyWord = $("#keyWord").val();
   var port = $("#port").val();
+  var targetAddr = $("#targetAddr").val();
   var targetPort = $("#targetPort").val();
 
   $.post("ForwardList/json", {
     port: port,
+    targetAddr: targetAddr,
     targetPort: targetPort,
     pIndex: pIndex,
     pSize: 10
@@ -147,21 +156,23 @@ function query(pIndex) {
       var totalPages = json.Data.Pages;
       var totalRows = json.Data.TotalRows;
       //显示分页
-      layui.laypage({
-        cont: 'pagination', //容器
+      layui.laypage.render({
+        elem: 'pagination', //容器
         pages: totalPages, //通过后台拿到的总页数
-        total: totalRows,
+        count: totalRows,
+        limit: 10,
         groups: 5, //连续分页数
         skin: "#51b921", //控制分页皮肤。目前支持：molv、yahei、flow 除此之外，还支持16进制颜色值，如:skin:'#c00'
         curr: pIndex || 1, //当前页
         skip: true,
+        layout: ['count','prev', 'page', 'next', 'skip'],
         jump: function(obj, first) { //触发分页后的回调
           if (!first) { //点击跳页触发函数自身，并传递当前页：obj.curr
             query(obj.curr);
           }
         }
       });
-      layui.form().render('checkbox');
+      layui.form.render('checkbox');
     } else { //失败
       layui.layer.alert("失败：" + json.Msg, {
         icon: 2

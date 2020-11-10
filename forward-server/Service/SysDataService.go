@@ -194,6 +194,10 @@ func (_self *SysDataService) GetPortForwardList(query *Models.PortForward, pageI
 		qs = qs.Filter("Port", query.Port)
 	}
 
+	if len(query.TargetAddr) > 0 {
+		qs = qs.Filter("TargetAddr__icontains", query.TargetAddr)
+	}
+
 	if query.TargetPort > 0 {
 		qs = qs.Filter("TargetPort", query.TargetPort)
 	}
