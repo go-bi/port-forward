@@ -333,6 +333,42 @@ function refreshGrid() {
 }
 
 function OpenForward(id) {
+  $.post("/u/OpenForward", {
+      rnd: Math.random(),
+      id: id
+    }, function(json) {
+      if (json.Code == 0) { //成功
+        //layer.msg("执行成功.");
+        //layer.close(index);
+        query(1);
+      } else { //失败
+        layer.alert(json.Msg, {
+          icon: 2
+        });
+        query(1);
+      }
+    }, 'json');
+}
+
+function CloseForward(id) {
+  $.post("/u/CloseForward", {
+      rnd: Math.random(),
+      id: id
+    }, function(json) {
+      if (json.Code == 0) { //成功
+        //layer.msg("执行成功.");
+        //layer.close(index);
+        query(1);
+      } else { //失败
+        layer.alert(json.Msg, {
+          icon: 2
+        });
+        query(1);
+      }
+    }, 'json');
+}
+
+function OpenForward2(id) {
   layer.confirm("确定启动该转发吗？", {
     btn: ['确定', '取消'] //按钮
   }, function(index, layero) {
@@ -354,7 +390,7 @@ function OpenForward(id) {
   });
 }
 
-function CloseForward(id) {
+function CloseForward2(id) {
   layer.confirm("确定停止该转发吗？", {
     btn: ['确定', '取消'] //按钮
   }, function(index, layero) {
