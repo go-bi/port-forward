@@ -6,18 +6,19 @@ import (
 	"forward-core/Models"
 	"forward-core/NetUtils"
 	"forward-core/Utils"
-	"github.com/astaxie/beego/logs"
 	"net"
 	"sync"
 	"time"
+
+	"github.com/astaxie/beego/logs"
 )
 
 type ForWardJob struct {
-	Config *Models.ForwardConfig
-	ClientMap       map[string]*ForWardClient
-	ClientMapLock   sync.Mutex
-	Status byte
-	PortListener net.Listener
+	Config        *Models.ForwardConfig
+	ClientMap     map[string]*ForWardClient
+	ClientMapLock sync.Mutex
+	Status        byte
+	PortListener  net.Listener
 	UdpForwardJob *UdpForward
 }
 
@@ -34,7 +35,6 @@ func (_self *ForWardJob) StartJob(result chan Models.FuncResult) {
 
 		err = _self.UdpForwardJob.DoUdpForward(sourceAddr, destAddr)
 
-
 		if err != nil {
 			logs.Error("启动UDP监听 ", sourceAddr, " 出错：", err)
 			resultData.Code = 1
@@ -46,7 +46,6 @@ func (_self *ForWardJob) StartJob(result chan Models.FuncResult) {
 		_self.Status = Constant.RunStatus_Running
 		logs.Debug("启动UDP端口转发，从 ", sourceAddr, " 到 ", destAddr)
 		result <- *resultData
-
 
 	} else {
 		_self.PortListener, err = NetUtils.NewTCP(sourceAddr)
@@ -65,24 +64,21 @@ func (_self *ForWardJob) StartJob(result chan Models.FuncResult) {
 
 		_self.doTcpForward(destAddr)
 
-
 	}
-
-
 
 }
 
-
-func  (_self *ForWardJob) doTcpForward (destAddr string){
+func (_self *ForWardJob) doTcpForward(destAddr string) {
 
 	for {
 		realClientConn, err := _self.PortListener.Accept()
 		if err != nil {
 			logs.Error("Forward Accept err:", err.Error())
-			break
+			//break
+			continue
 		}
 
-		logs.Debug("新用户 ", realClientConn.RemoteAddr().String()," 网络数据转发到：", destAddr)
+		logs.Debug("新用户 ", realClientConn.RemoteAddr().String(), " 网络数据转发到：", destAddr)
 
 		var destConn net.Conn
 		if _self.Config.Protocol == "UDP" {
@@ -94,7 +90,9 @@ func  (_self *ForWardJob) doTcpForward (destAddr string){
 
 		if err != nil {
 			logs.Error("Forward to Dest Addr err:", err.Error())
-			break
+			//break
+			continue
+
 		}
 
 		forwardClient := &ForWardClient{realClientConn, destConn, _self.ClosedCallBack}
@@ -106,7 +104,7 @@ func  (_self *ForWardJob) doTcpForward (destAddr string){
 	}
 }
 
-func  (_self *ForWardJob) ClosedCallBack (srcConn net.Conn, destConn net.Conn){
+func (_self *ForWardJob) ClosedCallBack(srcConn net.Conn, destConn net.Conn) {
 
 	_self.UnRegistryClient(_self.GetClientId(srcConn))
 }
@@ -146,7 +144,7 @@ func (_self *ForWardJob) StopJob() {
 
 	if _self.IsUdpJob() {
 		_self.stopUdpJob()
-	}else{
+	} else {
 		_self.stopTcpJob()
 	}
 
