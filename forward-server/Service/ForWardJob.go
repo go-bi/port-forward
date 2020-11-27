@@ -74,8 +74,7 @@ func (_self *ForWardJob) doTcpForward(destAddr string) {
 		realClientConn, err := _self.PortListener.Accept()
 		if err != nil {
 			logs.Error("Forward Accept err:", err.Error())
-			//break
-			continue
+			break
 		}
 
 		logs.Info("新用户 ", realClientConn.RemoteAddr().String(), " 数据转发规则：", fmt.Sprint(_self.Config.SrcAddr, ":", _self.Config.SrcPort), "->", destAddr)
