@@ -34,8 +34,8 @@
       <label class="layui-form-label">协议</label>
       <div class="layui-input-inline">
         <select name="protocol">
-          <option value="TCP">TCP</option>
-          <option value="UDP">UDP</option>
+          <option value="TCP" {{if eq .entity.Protocol "TCP"}}selected="selected"{{end}}>TCP</option>
+          <option value="UDP" {{if eq .entity.Protocol "UDP"}}selected="selected"{{end}}>UDP</option>
         </select>
       </div>
     </div>
@@ -58,9 +58,10 @@
       </div>
     </div>
     <div class="layui-form-item">
-      <label class="layui-form-label">是否启用</label>
-      <div class="layui-input-inline">
-        <input type="text" name="status" value="{{.entity.Status}}" lay-verify="required" placeholder="0:禁用，1:开启" autocomplete="off" class="layui-input">
+      <label class="layui-form-label">一键开启</label>
+      <div class="layui-input-block">
+        <input type="radio" name="status" value="0" title="不支持" {{if eq .entity.Status 0}} checked {{end}}>
+        <input type="radio" name="status" value="1" title="支持" {{if eq .entity.Status 1}} checked {{end}}>
       </div>
     </div>
     <div class="layui-form-item">
@@ -70,8 +71,8 @@
 如果需要分发到多个端口，填写格式为 “IP:端口”，多个用 ; 号隔开
 如 192.1.1.100:8081;192.1.1.100:8082
 
-*是否启用说明（可让程序每次运行后就开始转发该规则）：
-0:禁用，1:启用
+*一键开启说明，设置为“支持”后：
+通过在配置文件中添加  onstart.forward = "true" ，可让程序每次运行后就开始转发该规则，或者在列表页面通过点击“一键开启”。
 
         </pre> 
     </div>
@@ -85,7 +86,7 @@
     layui.use(["form", "element"], function () {
       var form = layui.form;
 
-      form.render('select');
+      form.render();
     });
 
 
