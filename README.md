@@ -16,7 +16,7 @@ v1.2.9_beta 发布，完善点对点转发的稳定性，支持TCP和UDP协议�
 ```
 
 # 最新编译好的版本下载：
-> https://gitee.com/tavenli/port-forward/releases/v1.3.1
+> https://gitee.com/tavenli/port-forward/releases/v1.3.2
 
 
 # 功能介绍
