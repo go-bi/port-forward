@@ -40,6 +40,8 @@
 
       <button class="layui-btn layui-btn-small" onclick="addForward();"><i class="layui-icon"></i> 添加转发</button>
       <button class="layui-btn layui-btn-small" onclick="delForward();"><i class="layui-icon"></i> 批量删除</button>
+      <button class="layui-btn layui-btn-small layui-btn-danger" onclick="OpenAllForward();">一键开启</button>
+      <button class="layui-btn layui-btn-small layui-btn-danger" onclick="CloseAllForward();">一键关闭</button>
       <div class="layui-form">
         <table class="layui-table">
           <colgroup>
@@ -412,5 +414,45 @@ function CloseForward2(id) {
   });
 }
 
+function OpenAllForward() {
+  layer.confirm("确定一键开启所有转发吗？", {
+    btn: ['确定', '取消'] //按钮
+  }, function(index, layero) {
+    $.post("/u/OpenAllForward", {
+      rnd: Math.random()
+    }, function(json) {
+      if (json.Code == 0) { //成功
+        layer.msg("执行成功.");
+        layer.close(index);
+        query(1);
+      } else { //失败
+        layer.alert(json.Msg, {
+          icon: 2
+        });
+        query(1);
+      }
+    }, 'json');
+  });
+}
 
+function CloseAllForward() {
+  layer.confirm("确定一键关闭所有转发吗？", {
+    btn: ['确定', '取消'] //按钮
+  }, function(index, layero) {
+    $.post("/u/CloseAllForward", {
+      rnd: Math.random()
+    }, function(json) {
+      if (json.Code == 0) { //成功
+        layer.msg("执行成功.");
+        layer.close(index);
+        query(1);
+      } else { //失败
+        layer.alert(json.Msg, {
+          icon: 2
+        });
+        query(1);
+      }
+    }, 'json');
+  });
+}
 </script>

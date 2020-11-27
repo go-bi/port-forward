@@ -240,6 +240,37 @@ func (c *ForwardCtrl) CloseForward() {
 	c.ServeJSON()
 }
 
+// @router /u/OpenAllForward [get,post]
+func (c *ForwardCtrl) OpenAllForward() {
+
+	forwards := Service.SysDataS.GetAllPortForwardList(1)
+	for _, entity := range forwards {
+		resultChan := make(chan Models.FuncResult)
+		config := Service.SysDataS.ToForwardConfig(entity)
+		go Service.ForWardServ.OpenForward(config, resultChan)
+
+		fmt.Println(<-resultChan)
+	}
+
+	c.Data["json"] = Models.FuncResult{Code: 0, Msg: ""}
+
+	c.ServeJSON()
+}
+
+// @router /u/CloseAllForward [get,post]
+func (c *ForwardCtrl) CloseAllForward() {
+	//forwards := Service.SysDataS.GetAllPortForwardList(1)
+	//for _, entity := range forwards {
+	//	config := Service.SysDataS.ToForwardConfig(entity)
+	//	Service.ForWardServ.CloseForward(config)
+	//}
+
+	Service.ForWardServ.CloseAllForward()
+	c.Data["json"] = Models.FuncResult{Code: 0, Msg: ""}
+
+	c.ServeJSON()
+}
+
 // @router /u/ApiDoc [get]
 func (c *ForwardCtrl) ApiDoc() {
 

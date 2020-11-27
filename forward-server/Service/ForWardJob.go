@@ -74,6 +74,8 @@ func (_self *ForWardJob) doTcpForward(destAddr string) {
 		realClientConn, err := _self.PortListener.Accept()
 		if err != nil {
 			logs.Error("Forward Accept err:", err.Error())
+			logs.Error(fmt.Sprint("转发出现异常：", _self.Config.SrcAddr, ":", _self.Config.SrcPort, "->", destAddr))
+			_self.StopJob()
 			break
 		}
 
@@ -88,7 +90,7 @@ func (_self *ForWardJob) doTcpForward(destAddr string) {
 		}
 
 		if err != nil {
-			logs.Error("Forward to Dest Addr err:", err.Error())
+			logs.Error("转发出现异常 Forward to Dest Addr err:", err.Error())
 			//break
 			continue
 
