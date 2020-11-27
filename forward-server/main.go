@@ -17,10 +17,11 @@ func main() {
 
 	logFileConfig := beego.AppConfig.String("logfile.config")
 
+	//日志级别："emergency", "alert", "critical", "error", "warning", "notice", "info", "debug"
 	logs.SetLogger(logs.AdapterConsole, `{"level":7}`)
 
 	if len(logFileConfig) == 0 {
-		logFileConfig = `{"filename":"app.log","level":7,"maxlines":0,"maxsize":0,"daily":true,"maxdays":10}`
+		logFileConfig = `{"filename":"app.log","level":6,"maxlines":0,"maxsize":0,"daily":true,"maxdays":10}`
 	}
 
 	if logFileConfig != "close" {

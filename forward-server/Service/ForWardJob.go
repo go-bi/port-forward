@@ -78,7 +78,7 @@ func (_self *ForWardJob) doTcpForward(destAddr string) {
 			continue
 		}
 
-		logs.Debug("新用户 ", realClientConn.RemoteAddr().String(), " 网络数据转发到：", destAddr)
+		logs.Info("新用户 ", realClientConn.RemoteAddr().String(), " 数据转发规则：", fmt.Sprint(_self.Config.SrcAddr, ":", _self.Config.SrcPort), "->", destAddr)
 
 		var destConn net.Conn
 		if _self.Config.Protocol == "UDP" {
