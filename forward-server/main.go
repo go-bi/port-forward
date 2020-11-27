@@ -7,6 +7,7 @@ import (
 
 	"forward-core/Models"
 
+	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/logs"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/vmihailenco/msgpack"
@@ -14,8 +15,18 @@ import (
 
 func main() {
 
+	logFileConfig := beego.AppConfig.String("logfile.config")
+
 	logs.SetLogger(logs.AdapterConsole, `{"level":7}`)
-	logs.SetLogger(logs.AdapterFile, `{"filename":"app.log","level":7,"maxlines":0,"maxsize":0,"daily":true,"maxdays":10}`)
+
+	if len(logFileConfig) == 0 {
+		logFileConfig = `{"filename":"app.log","level":7,"maxlines":0,"maxsize":0,"daily":true,"maxdays":10}`
+	}
+
+	if logFileConfig != "close" {
+		//logs.SetLogger(logs.AdapterFile, `{"filename":"app.log","level":7,"maxlines":0,"maxsize":0,"daily":true,"maxdays":10}`)
+		logs.SetLogger(logs.AdapterFile, logFileConfig)
+	}
 
 	//输出文件名和行号
 	logs.EnableFuncCallDepth(true)
