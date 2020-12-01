@@ -17,7 +17,8 @@ v1.2.9_beta 发布，完善点对点转发的稳定性，支持TCP和UDP协议�
 ```
 
 # 最新编译好的版本下载：
-> https://gitee.com/tavenli/port-forward/releases/v1.3.3
+[http://git.oschina.net/tavenli/port-forward/releases](http://git.oschina.net/tavenli/port-forward/releases)
+
 
 
 # 功能介绍
@@ -29,10 +30,6 @@ v1.2.9_beta 发布，完善点对点转发的稳定性，支持TCP和UDP协议�
 > 支持 RestfulAPI 接口，方便被其它系统集成
 
 > 支持每条端口转发的同时，再分发给多个端口，满足某些测试场景
-
-# 已编译好的程序包
-
-[http://git.oschina.net/tavenli/port-forward/releases](http://git.oschina.net/tavenli/port-forward/releases)
 
 
 # 使用交流群
