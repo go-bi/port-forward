@@ -36,7 +36,7 @@ func main() {
 	logs.Async()
 
 	logs.Debug("★★★★★★★★★★★★★★★★★★★★")
-	logs.Debug("         tcp-forward 启动")
+	logs.Debug("         port-forward 启动")
 	logs.Debug("")
 	logs.Debug("项目地址：https://github.com/tavenli/port-forward")
 	logs.Debug("")
