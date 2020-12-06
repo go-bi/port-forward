@@ -19,6 +19,8 @@ type ForwardCtrl struct {
 // @router /u/ForwardList [get]
 func (c *ForwardCtrl) ForwardList() {
 
+	c.Data["ForWardDebug"] = Service.ForWardDebug
+
 	c.TplName = "ucenter/forwardList.html"
 }
 
@@ -406,6 +408,19 @@ func (c *ForwardCtrl) StartAgentJob() {
 func (c *ForwardCtrl) StopAgentJob() {
 
 	c.Data["json"] = Models.FuncResult{Code: 0, Msg: ""}
+	c.ServeJSON()
+
+}
+
+// @router /u/ChangeForwardDebug [get,post]
+func (c *ForwardCtrl) ChangeForwardDebug() {
+
+	id, _ := c.GetInt("status")
+
+	Service.ForWardDebug = Utils.If(id == 1, true, false).(bool)
+
+	c.Data["json"] = Models.FuncResult{Code: 0, Msg: ""}
+
 	c.ServeJSON()
 
 }

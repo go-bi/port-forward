@@ -79,7 +79,9 @@ func (_self *ForWardJob) doTcpForward(destAddr string) {
 			break
 		}
 
-		logs.Info("新用户 ", realClientConn.RemoteAddr().String(), " 数据转发规则：", fmt.Sprint(_self.Config.SrcAddr, ":", _self.Config.SrcPort), "->", destAddr)
+		if ForWardDebug == true {
+			logs.Info("新用户 ", realClientConn.RemoteAddr().String(), " 数据转发规则：", fmt.Sprint(_self.Config.SrcAddr, ":", _self.Config.SrcPort), "->", destAddr)
+		}
 
 		var destConn net.Conn
 		if _self.Config.Protocol == "UDP" {
@@ -90,7 +92,10 @@ func (_self *ForWardJob) doTcpForward(destAddr string) {
 		}
 
 		if err != nil {
-			logs.Error("转发出现异常 Forward to Dest Addr err:", err.Error())
+			if ForWardDebug == true {
+				logs.Warn("转发出现异常 Forward to Dest Addr err:", err.Error())
+			}
+
 			//break
 			continue
 
@@ -127,7 +132,9 @@ func (_self *ForWardJob) UnRegistryClient(srcAddr string) {
 	defer _self.ClientMapLock.Unlock()
 
 	delete(_self.ClientMap, srcAddr)
-	logs.Debug("UnRegistryClient srcAddr: ", srcAddr)
+	if ForWardDebug == true {
+		logs.Debug("UnRegistryClient srcAddr: ", srcAddr)
+	}
 
 }
 
@@ -157,7 +164,9 @@ func (_self *ForWardJob) stopTcpJob() {
 	_self.PortListener.Close()
 
 	for srcAddr, client := range _self.ClientMap {
-		logs.Debug("停止真实用户连接：", srcAddr)
+		if ForWardDebug == true {
+			logs.Debug("停止真实用户连接：", srcAddr)
+		}
 		client.StopForward()
 	}
 
