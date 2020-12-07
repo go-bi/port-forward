@@ -205,6 +205,24 @@ func init() {
 			Filters:          nil,
 			Params:           nil})
 
+	beego.GlobalControllerRouter["forward-server/Controllers:ForwardCtrl"] = append(beego.GlobalControllerRouter["forward-server/Controllers:ForwardCtrl"],
+		beego.ControllerComments{
+			Method:           "AddBatchForward",
+			Router:           `/u/AddBatchForward`,
+			AllowHTTPMethods: []string{"get"},
+			MethodParams:     param.Make(),
+			Filters:          nil,
+			Params:           nil})
+
+	beego.GlobalControllerRouter["forward-server/Controllers:ForwardCtrl"] = append(beego.GlobalControllerRouter["forward-server/Controllers:ForwardCtrl"],
+		beego.ControllerComments{
+			Method:           "SaveBatchForward",
+			Router:           `/u/SaveBatchForward`,
+			AllowHTTPMethods: []string{"post"},
+			MethodParams:     param.Make(),
+			Filters:          nil,
+			Params:           nil})
+
 	beego.GlobalControllerRouter["forward-server/Controllers:LoginCtrl"] = append(beego.GlobalControllerRouter["forward-server/Controllers:LoginCtrl"],
 		beego.ControllerComments{
 			Method:           "Login",

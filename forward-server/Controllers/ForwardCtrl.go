@@ -424,3 +424,69 @@ func (c *ForwardCtrl) ChangeForwardDebug() {
 	c.ServeJSON()
 
 }
+
+// @router /u/AddBatchForward [get]
+func (c *ForwardCtrl) AddBatchForward() {
+
+	c.TplName = "ucenter/addBatchForward.html"
+
+}
+
+// @router /u/SaveBatchForward [post]
+func (c *ForwardCtrl) SaveBatchForward() {
+	rows, _ := c.GetInt("rows")
+
+	for i := 0; i < rows; i++ {
+		name := c.GetString(fmt.Sprint("name[", i, "]"), "-")
+		port, _ := c.GetInt(fmt.Sprint("port[", i, "]"))
+		protocol := c.GetString(fmt.Sprint("protocol[", i, "]"), "TCP")
+		targetAddr := c.GetString(fmt.Sprint("targetAddr[", i, "]"), "")
+		targetPort, _ := c.GetInt(fmt.Sprint("targetPort[", i, "]"))
+
+		if port < 0 || port > 65535 {
+			//
+			c.Data["json"] = Models.FuncResult{Code: 1, Msg: fmt.Sprint("监听端口 不在允许的范围 ", port)}
+			c.ServeJSON()
+			return
+		}
+
+		if targetPort < 0 || targetPort > 65535 {
+			//
+			c.Data["json"] = Models.FuncResult{Code: 1, Msg: fmt.Sprint("目标端口 不在允许的范围 ", targetPort)}
+			c.ServeJSON()
+			return
+		}
+
+		if Utils.IsEmpty(targetAddr) {
+			//
+			c.Data["json"] = Models.FuncResult{Code: 1, Msg: "目标地址 不能为空"}
+			c.ServeJSON()
+			return
+		}
+
+		name = Utils.FilterHtml(name)
+
+		entity := &Models.PortForward{}
+		entity.Id = 0
+		entity.Name = name
+		entity.Addr = ""
+		entity.Port = port
+		entity.Protocol = protocol
+		entity.TargetAddr = targetAddr
+		entity.TargetPort = targetPort
+		entity.Others = ""
+		entity.FType = 0
+		entity.Status = 1
+
+		err := Service.SysDataS.SavePortForward(entity)
+		if err != nil {
+			logs.Error("SaveForward ", err.Error())
+		}
+
+	}
+
+	c.Data["json"] = Models.FuncResult{Code: 0, Msg: ""}
+
+	c.ServeJSON()
+
+}
