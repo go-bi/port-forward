@@ -436,6 +436,7 @@ func (c *ForwardCtrl) AddBatchForward() {
 func (c *ForwardCtrl) SaveBatchForward() {
 	rows, _ := c.GetInt("rows")
 
+	var entities []*Models.PortForward
 	for i := 0; i < rows; i++ {
 		name := c.GetString(fmt.Sprint("name[", i, "]"), "-")
 		port, _ := c.GetInt(fmt.Sprint("port[", i, "]"))
@@ -478,11 +479,15 @@ func (c *ForwardCtrl) SaveBatchForward() {
 		entity.FType = 0
 		entity.Status = 1
 
+		entities = append(entities, entity)
+
+	}
+
+	for _, entity := range entities {
 		err := Service.SysDataS.SavePortForward(entity)
 		if err != nil {
 			logs.Error("SaveForward ", err.Error())
 		}
-
 	}
 
 	c.Data["json"] = Models.FuncResult{Code: 0, Msg: ""}
