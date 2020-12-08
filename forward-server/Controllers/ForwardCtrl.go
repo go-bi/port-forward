@@ -543,6 +543,13 @@ func (c *ForwardCtrl) SaveImportForward() {
 		targetAddr := rowDatas[4]
 		targetPort := Utils.ToInt(rowDatas[5])
 
+		if Utils.IsEmpty(targetAddr) {
+			//
+			c.Data["json"] = Models.FuncResult{Code: 1, Msg: "目标地址 不能为空"}
+			c.ServeJSON()
+			return
+		}
+
 		entity := &Models.PortForward{}
 		entity.Id = 0
 		entity.Name = name
