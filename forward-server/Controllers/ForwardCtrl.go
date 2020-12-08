@@ -550,6 +550,20 @@ func (c *ForwardCtrl) SaveImportForward() {
 			return
 		}
 
+		if port < 0 || port > 65535 {
+			//
+			c.Data["json"] = Models.FuncResult{Code: 1, Msg: fmt.Sprint("监听端口 不在允许的范围 ", port)}
+			c.ServeJSON()
+			return
+		}
+
+		if targetPort < 0 || targetPort > 65535 {
+			//
+			c.Data["json"] = Models.FuncResult{Code: 1, Msg: fmt.Sprint("目标端口 不在允许的范围 ", targetPort)}
+			c.ServeJSON()
+			return
+		}
+
 		entity := &Models.PortForward{}
 		entity.Id = 0
 		entity.Name = name
