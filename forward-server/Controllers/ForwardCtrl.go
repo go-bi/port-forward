@@ -495,3 +495,78 @@ func (c *ForwardCtrl) SaveBatchForward() {
 	c.ServeJSON()
 
 }
+
+// @router /u/ImportForward [get]
+func (c *ForwardCtrl) ImportForward() {
+
+	c.TplName = "ucenter/importForward.html"
+
+}
+
+// @router /u/SaveImportForward [post]
+func (c *ForwardCtrl) SaveImportForward() {
+
+	splitChar := c.GetString("splitChar", ",")
+	inputDatas := c.GetString("inputDatas", "")
+
+	if Utils.IsEmpty(inputDatas) {
+		//
+		c.Data["json"] = Models.FuncResult{Code: 1, Msg: "导入的数据不能为空"}
+		c.ServeJSON()
+		return
+	}
+
+	dataRows := Utils.Split(inputDatas, "\n")
+
+	var entities []*Models.PortForward
+	for _, rowContent := range dataRows {
+		if Utils.IsEmpty(rowContent) {
+			continue
+		}
+
+		//名称,本地监听地址,本地监听端口,协议类型,目标地址,目标端口
+		rowDatas := Utils.Split(rowContent, splitChar)
+
+		if len(rowDatas) < 6 {
+			continue
+		}
+
+		name := rowDatas[0]
+		name = Utils.FilterHtml(name)
+		if Utils.IsEmpty(name) {
+			name = "-"
+		}
+
+		addr := rowDatas[1]
+		port := Utils.ToInt(rowDatas[2])
+		protocol := Utils.If(rowDatas[3] == "TCP", "TCP", "UDP").(string)
+		targetAddr := rowDatas[4]
+		targetPort := Utils.ToInt(rowDatas[5])
+
+		entity := &Models.PortForward{}
+		entity.Id = 0
+		entity.Name = name
+		entity.Addr = addr
+		entity.Port = port
+		entity.Protocol = protocol
+		entity.TargetAddr = targetAddr
+		entity.TargetPort = targetPort
+		entity.Others = ""
+		entity.FType = 0
+		entity.Status = 1
+
+		entities = append(entities, entity)
+
+	}
+
+	for _, entity := range entities {
+		err := Service.SysDataS.SavePortForward(entity)
+		if err != nil {
+			logs.Error("SaveForward ", err.Error())
+		}
+	}
+
+	c.Data["json"] = Models.FuncResult{Code: 0, Msg: ""}
+
+	c.ServeJSON()
+}
