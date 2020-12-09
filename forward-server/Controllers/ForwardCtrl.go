@@ -248,6 +248,13 @@ func (c *ForwardCtrl) OpenAllForward() {
 	forwards := Service.SysDataS.GetAllPortForwardList(1)
 	for _, entity := range forwards {
 		resultChan := make(chan Models.FuncResult)
+
+		forwardJob := Service.SysDataS.GetForwardJob(entity)
+		if forwardJob != nil && forwardJob.Status == Constant.RunStatus_Running {
+			//正在转发中
+			continue
+		}
+
 		config := Service.SysDataS.ToForwardConfig(entity)
 		go Service.ForWardServ.OpenForward(config, resultChan)
 
