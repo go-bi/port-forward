@@ -1,2 +1,16 @@
+
+target
 logs
+node_modules
+
+
+.idea
+.temp
+
 *.log
+*.iml
+*.sum
+
+*.exe
+*.exe~
+*.db
