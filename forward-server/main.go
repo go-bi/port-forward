@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	logs "github.com/tavenli/gologs"
+	"github.com/beego/beego/v2/core/logs"
 )
 
 func main(){
@@ -30,7 +30,5 @@ func main(){
 	logs.Warn("wwwwwwwww")
 	logs.Error("eeeeeeeeeeeeeeee")
 
-	for {
 
-	}
 }
