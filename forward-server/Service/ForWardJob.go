@@ -6,6 +6,7 @@ import (
 	"forward-core/Models"
 	"forward-core/NetUtils"
 	"forward-core/Utils"
+	"io"
 	"net"
 	"sync"
 	"time"
@@ -101,8 +102,28 @@ func (_self *ForWardJob) doTcpForward(destAddr string) {
 
 		}
 
-		forwardClient := &ForWardClient{realClientConn, destConn, _self.ClosedCallBack}
-		go forwardClient.StartForward()
+		forwardClient := &ForWardClient{realClientConn, destConn, nil, _self.ClosedCallBack}
+
+		if Utils.IsNotEmpty(_self.Config.Others) {
+			var dispatchConns []io.Writer
+			//分发方式
+			dispatchTargets := Utils.Split(_self.Config.Others, ";")
+
+			for _, dispatchTarget := range dispatchTargets {
+				logs.Debug("分发到：", dispatchTarget)
+				dispatchTargetConn, err := net.DialTimeout("tcp", dispatchTarget, 30*time.Second)
+				if err == nil {
+					dispatchConns = append(dispatchConns, dispatchTargetConn)
+				}
+
+			}
+
+			forwardClient.DispatchConns = dispatchConns
+
+			go forwardClient.DispatchData(dispatchConns)
+		} else {
+			go forwardClient.StartForward()
+		}
 
 		_self.RegistryClient(_self.GetClientId(realClientConn), forwardClient)
 		//_self.RegistryClient(fmt.Sprint(sourceAddr, "_", "TCP", "_", id), forwardClient)

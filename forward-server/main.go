@@ -21,12 +21,15 @@ func main() {
 	logs.SetLogger(logs.AdapterConsole, `{"level":7}`)
 
 	if len(logFileConfig) == 0 {
-		logFileConfig = `{"filename":"app.log","level":7,"maxlines":0,"maxsize":0,"daily":true,"maxdays":10}`
+		//logFileConfig = `{"filename":"app.log","level":7,"maxlines":0,"maxsize":0,"daily":true,"maxdays":10}`
+		logFileConfig = `{"filename":"app.log","level":7,"maxlines":0,"maxsize":0,"daily":true,"maxdays":10,"separate":["error"]}`
+
 	}
 
 	if logFileConfig != "close" {
 		//logs.SetLogger(logs.AdapterFile, `{"filename":"app.log","level":7,"maxlines":0,"maxsize":0,"daily":true,"maxdays":10}`)
-		logs.SetLogger(logs.AdapterFile, logFileConfig)
+		//logs.SetLogger(logs.AdapterFile, logFileConfig)
+		logs.SetLogger(logs.AdapterMultiFile, logFileConfig)
 	}
 
 	//输出文件名和行号
@@ -41,6 +44,8 @@ func main() {
 	logs.Debug("项目地址：https://github.com/tavenli/port-forward")
 	logs.Debug("")
 	logs.Debug("★★★★★★★★★★★★★★★★★★★★")
+
+	defer logs.GetBeeLogger().Flush()
 
 	//test1()
 
